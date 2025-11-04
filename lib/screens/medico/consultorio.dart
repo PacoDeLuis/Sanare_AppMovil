@@ -34,10 +34,7 @@ class _ConsultorioScreenState extends State<ConsultorioScreen> {
       return;
     }
 
-    print('Guardando nuevo consultorio:');
-    print('Nombre: ${_nameController.text}');
-    print('Especialidad: ${_specializationController.text}');
-
+  
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Consultorio ${_nameController.text} agregado con éxito!'),
