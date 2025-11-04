@@ -21,8 +21,8 @@ class NotificacionesScreen extends StatelessWidget {
             children: [
               const Icon(
                 Icons.notifications_active_outlined, 
-                size: 80, 
-                color: sanareBlue,
+                size: 100, 
+                color: Color.fromARGB(255, 99, 161, 192),
               ),
               const SizedBox(height: 20),
               const Text(
