@@ -121,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
         style: const TextStyle(color: sanareDarkText),
         decoration: InputDecoration(
           hintText: hintText,
+          // ignore: deprecated_member_use
           hintStyle: TextStyle(color: sanareLightBlue.withOpacity(0.7)),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           border: OutlineInputBorder(
@@ -459,6 +460,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         style: const TextStyle(color: sanareDarkText),
         decoration: InputDecoration(
           hintText: hintText,
+          // ignore: deprecated_member_use
           hintStyle: TextStyle(color: sanareLightBlue.withOpacity(0.7)),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           border: OutlineInputBorder(

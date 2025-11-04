@@ -34,8 +34,11 @@ class _ConsultorioScreenState extends State<ConsultorioScreen> {
       return;
     }
 
+    // ignore: avoid_print
     print('Guardando nuevo consultorio:');
+    // ignore: avoid_print
     print('Nombre: ${_nameController.text}');
+    // ignore: avoid_print
     print('Especialidad: ${_specializationController.text}');
 
     ScaffoldMessenger.of(context).showSnackBar(

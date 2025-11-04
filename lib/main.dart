@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
           seedColor: sanareBlue, 
           primary: sanareBlue,
           secondary: sanareLightPink, 
+          // ignore: deprecated_member_use
           background: Colors.white,
         ),
         useMaterial3: true,
@@ -63,6 +64,7 @@ class SanareSplashScreenMerged extends StatelessWidget {
             width: size * 0.55, 
             height: size * 0.55,
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: sanareLightPink.withOpacity(0.8),
               borderRadius: BorderRadius.circular(size / 4),
             ),
@@ -72,6 +74,7 @@ class SanareSplashScreenMerged extends StatelessWidget {
             width: size * 0.55, 
             height: size * 0.55,
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: sanareBlue.withOpacity(0.8),
               borderRadius: BorderRadius.circular(size / 4),
             ),

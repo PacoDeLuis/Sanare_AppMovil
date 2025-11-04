@@ -70,6 +70,7 @@ class ClinicCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.15),
             spreadRadius: 1,
             blurRadius: 5,
@@ -92,6 +93,7 @@ class ClinicCard extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
                     color: sanareLightBlue.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -203,6 +205,7 @@ class ConsultorioView extends StatelessWidget {
       decoration: BoxDecoration(
         color: sanareLightGray,
         borderRadius: BorderRadius.circular(25),
+        // ignore: deprecated_member_use
         border: Border.all(color: sanareLightBlue.withOpacity(0.5)),
       ),
       child: const TextField(
@@ -276,6 +279,7 @@ class ConsultorioView extends StatelessWidget {
             ],
           ),
           const Divider(height: 25, thickness: 1, color: sanareLightBlue),
+          // ignore: unnecessary_to_list_in_spreads
           ...dummyClinics.map((clinic) => ClinicCard(clinic: clinic)).toList(),
         ],
       ),
