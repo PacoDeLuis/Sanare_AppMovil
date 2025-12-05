@@ -1,294 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:sanare/screens/login.dart';
+import 'package:sanare/services/auth_service.dart';
 
-void main() {
-  runApp(const SanareApp());
-}
+// Definiciones de Roles y Colores
+enum UserRole { medico, paciente }
 
-// Definiciones Globales
-
-// Enumeración de Rol de Usuario
-enum UserRole {
-  medico,
-  paciente
-}
-
-// Definición de colores de la marca
 const Color sanareBlue = Color(0xFF4A688A);
 const Color sanareLightBlue = Color(0xFF8DAAC1);
 const Color sanareDarkText = Color(0xFF333333);
+const Color sanareBackground = Color(0xFFF7F9FB); // Fondo ligero para contraste
 
-// Aplicación Principal
-class SanareApp extends StatelessWidget {
-  const SanareApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sanare Register & Login',
-      theme: ThemeData(
-        primaryColor: sanareBlue,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: sanareLightBlue),
-        // Se asume que la fuente 'Inter' está configurada en el proyecto
-        fontFamily: 'Inter',
-        useMaterial3: true,
-      ),
-      home: const RegisterScreen(),
-    );
-  }
-}
-
-// Pantalla de Login
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  void _handleLogin() {
-    // Simulación de autenticación
-    if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Inicio de sesión simulado exitoso para ${_usernameController.text}'),
-          backgroundColor: sanareBlue,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      // Aquí podrías navegar a MedicoHomeScreen o PatientHomeScreen
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor, ingresa tu usuario y contraseña.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  Widget _buildTopLogo() {
-    return const Row(
-      children: [
-        Icon(
-            Icons.medical_services_outlined,
-            color: sanareBlue,
-            size: 30,
-        ),
-        SizedBox(width: 8),
-        Text(
-          'SANARE',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: sanareBlue,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextFieldLabel(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 16,
-          color: sanareDarkText,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-  
-  // Widget de campo de texto reutilizable
-  Widget _buildInputField({
-    String hintText = '',
-    bool isPassword = false,
-    TextInputType? keyboardType,
-    required TextEditingController controller,
-  }) {
-    return SizedBox(
-      height: 50,
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword,
-        keyboardType: keyboardType,
-        style: const TextStyle(color: sanareDarkText),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: sanareLightBlue.withOpacity(0.7)),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareLightBlue, width: 1.5),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareLightBlue, width: 1.5),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareBlue, width: 2),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: _buildTopLogo(),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // Botones de alternancia Iniciar Sesión / Registrarse
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {}, // No hace nada, ya está seleccionado
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: sanareBlue,
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: sanareBlue),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 2,
-                      ),
-                      child: const Text('Iniciar Sesión', style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        // Navega a la pantalla de Registro
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(),
-                          ),
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: sanareBlue,
-                        side: const BorderSide(color: sanareLightBlue),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 0,
-                      ),
-                      child: const Text('Registrarse', style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Contenido de la vista de Login
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 30),
-                  const Center(
-                    child: Text(
-                      'Bienvenido de vuelta',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: sanareBlue,
-                      ),
-                    ),
-                  ),
-                  const Divider(color: sanareLightBlue, height: 40, thickness: 1),
-
-                  _buildTextFieldLabel('Nombre de Usuario'),
-                  _buildInputField(
-                    hintText: 'Tu nombre de usuario',
-                    controller: _usernameController,
-                  ),
-
-                  _buildTextFieldLabel('Contraseña'),
-                  _buildInputField(
-                    hintText: 'Tu contraseña',
-                    isPassword: true,
-                    controller: _passwordController,
-                  ),
-
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Función de recuperación de contraseña aún no implementada.')),
-                          );
-                      },
-                      child: const Text(
-                        '¿Olvidaste tu contraseña?',
-                        style: TextStyle(color: sanareBlue, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  // Botón Iniciar Sesión
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _handleLogin,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(180, 50),
-                        backgroundColor: sanareBlue,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text('Iniciar Sesión', style: TextStyle(fontSize: 18)),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Pantalla de Registro
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
-
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  // Controladores y Estado (Funcionalidad NO ALTERADA)
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -296,13 +25,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _licenseController = TextEditingController();
   final TextEditingController _specialtyController = TextEditingController();
 
-
   UserRole _currentRole = UserRole.paciente;
   String? _selectedGender;
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -313,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _dobController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _licenseController.dispose();
     _specialtyController.dispose();
     super.dispose();
@@ -320,56 +52,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _setRole(UserRole newRole) {
     if (_currentRole != newRole) {
+      if (newRole == UserRole.paciente) {
+        _licenseController.clear();
+        _specialtyController.clear();
+      }
       setState(() {
         _currentRole = newRole;
       });
     }
   }
 
-  void _handleRegister() {
-    // 1. Lógica de validación simple
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty || _firstNameController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, completa todos los campos obligatorios.')),
-      );
-      return;
-    }
-
-    // 2. Simulación de registro - La lógica real de backend iría aquí.
-
-    // 3. Mostrar confirmación
+  void _showMessage(String message, {bool isError = true}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Registro simulado exitoso como ${_currentRole.name}. Navegando a Login.'),
-        backgroundColor: sanareBlue,
-        duration: const Duration(seconds: 2),
+        content: Text(message),
+        backgroundColor: isError ? Colors.red.shade700 : sanareBlue,
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating, // Estilo más moderno
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(16),
       ),
     );
-
-    // 4. Navegar al Login después del feedback
-    Future.delayed(const Duration(milliseconds: 1500), () {
-        if(mounted) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-          );
-        }
-    });
   }
-  
-  // Selector de fecha (Calendario)
+
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? selectedDate;
+    DateTime initialDate = DateTime.now().subtract(const Duration(days: 365 * 18));
+
     try {
       final parts = _dobController.text.split('/');
       if (parts.length == 3) {
-        selectedDate = DateTime.tryParse("${parts[2]}-${parts[1].padLeft(2, '0')}-${parts[0].padLeft(2, '0')}");
+        initialDate = DateTime(int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
       }
-    } catch (e) {
-      // Ignorar errores de parseo
-    }
-
-    DateTime initialDate = selectedDate ?? DateTime.now().subtract(const Duration(days: 365 * 18)); 
+    } catch (_) {}
 
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -377,7 +93,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now().subtract(const Duration(days: 365)),
       builder: (context, child) {
-        // Estilo del DatePicker para que coincida con el tema Sanare
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
@@ -386,9 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onSurface: sanareDarkText,
             ),
             textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: sanareBlue,
-              ),
+              style: TextButton.styleFrom(foregroundColor: sanareBlue),
             ),
           ),
           child: child!,
@@ -396,50 +109,122 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
     );
 
-    if (picked != null) {
+    if (picked != null && mounted) {
       setState(() {
-        _dobController.text = "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+        _dobController.text =
+            "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       });
     }
   }
 
+  Future<void> _handleRegister() async {
+    if (_isLoading) return;
+
+    if (!_formKey.currentState!.validate()) {
+      _showMessage('Por favor, completa todos los campos requeridos con formato correcto.');
+      return;
+    }
+
+    if (_selectedGender == null) {
+      _showMessage('Por favor, selecciona tu sexo.');
+      return;
+    }
+
+    if (_currentRole == UserRole.medico &&
+        (_licenseController.text.isEmpty || _specialtyController.text.isEmpty)) {
+      _showMessage('Como médico, debes completar la Cédula Profesional y la Especialidad.');
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showMessage('Las contraseñas no coinciden.');
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final String password = _passwordController.text;
+      final String password2 = _confirmPasswordController.text;
+
+      if (_currentRole == UserRole.paciente) {
+        await _authService.registerPaciente(
+          username: _usernameController.text,
+          email: _emailController.text,
+          password: password,
+          password2: password2,
+          first_name: _firstNameController.text,
+          last_name: _lastNameController.text,
+          fecha_nacimiento: _dobController.text,
+          sexo: _selectedGender!,
+          phone: _phoneController.text,
+        );
+      } else {
+        await _authService.registerMedico(
+          username: _usernameController.text,
+          email: _emailController.text,
+          password: password,
+          password2: password2,
+          first_name: _firstNameController.text,
+          last_name: _lastNameController.text,
+          fecha_nacimiento: _dobController.text,
+          sexo: _selectedGender!,
+          phone: _phoneController.text,
+          cedula: _licenseController.text,
+          especialidad: _specialtyController.text,
+        );
+      }
+
+      _showMessage(
+        'Registro exitoso como ${_currentRole.name}. Redirigiendo al inicio de sesión...',
+        isError: false,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 2000));
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    } catch (e) {
+      String error = e.toString().contains('TimeoutException')
+          ? 'Error de conexión. Inténtalo más tarde.'
+          : e.toString().replaceFirst('Exception: ', 'Error de Registro: ');
+      _showMessage(error);
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  // --- WIDGETS REFACTORIZADOS Y MEJORADOS ---
 
   Widget _buildTopLogo() {
-    return const Row(
-      children: [
-        Icon(
-            Icons.medical_services_outlined,
-            color: sanareBlue,
-            size: 30,
-        ),
-        SizedBox(width: 8),
-        Text(
-          'SANARE',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: sanareBlue,
-          ),
-        ),
-      ],
+    // Logo en color blanco para que contraste con el fondo azul de la pantalla de login/register
+    // Reemplazamos el placeholder de Icon/Text por una imagen de asset
+    return Image.asset(
+      'assets/logo_sanare.png', // IMPORTANTE: Reemplaza 'assets/logo.png' con la ruta real de tu logo y asegúrate de declararlo en pubspec.yaml
+      height: 60, // Ajusta la altura según sea necesario
     );
   }
 
   Widget _buildTextFieldLabel(String label) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+      padding: const EdgeInsets.only(top: 16.0, bottom: 6.0),
       child: Text(
         label,
         style: const TextStyle(
-          fontSize: 16,
+          fontSize: 15,
           color: sanareDarkText,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600, // Más énfasis en el label
         ),
       ),
     );
   }
 
-  // Widget de campo de texto reutilizable
   Widget _buildInputField({
     String hintText = '',
     bool isPassword = false,
@@ -447,347 +232,439 @@ class _RegisterScreenState extends State<RegisterScreen> {
     required TextEditingController controller,
     bool readOnly = false,
     VoidCallback? onTap,
+    String? Function(String?)? validator,
+    IconData? prefixIcon, // Nuevo: Soporte para iconos
   }) {
-    return SizedBox(
-      height: 50,
-      child: TextField(
-        controller: controller,
-        obscureText: isPassword,
-        keyboardType: keyboardType,
-        readOnly: readOnly,
-        onTap: onTap,
-        style: const TextStyle(color: sanareDarkText),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: sanareLightBlue.withOpacity(0.7)),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareLightBlue, width: 1.5),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareLightBlue, width: 1.5),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: sanareBlue, width: 2),
-          ),
+    return TextFormField(
+      controller: controller,
+      obscureText: isPassword,
+      keyboardType: keyboardType,
+      readOnly: readOnly,
+      onTap: onTap,
+      validator: validator ??
+          (value) => (value == null || value.isEmpty) ? 'Campo obligatorio.' : null,
+      style: const TextStyle(color: sanareDarkText, fontSize: 16),
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(color: sanareLightBlue.withOpacity(0.6), fontSize: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        isDense: true,
+        // Nuevo: Icono a la izquierda
+        prefixIcon: prefixIcon != null
+            ? Icon(prefixIcon, color: sanareLightBlue.withOpacity(0.8), size: 20)
+            : null,
+        // Estilo de borde mejorado con esquinas más suaves y foco en azul principal
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10), // Esquinas más suaves
+          borderSide: const BorderSide(color: sanareLightBlue, width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: sanareLightBlue, width: 1.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: sanareBlue, width: 2.0), // Borde más grueso al enfocar
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
       ),
     );
   }
 
-  // Widget de selección de género (Dropdown)
   Widget _buildGenderDropdown() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: sanareLightBlue, width: 1.5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: sanareLightBlue, width: 1.0),
       ),
-      child: DropdownButton<String>(
-        value: _selectedGender,
-        hint: const Text('Selecciona tu sexo', style: TextStyle(color: Color(0xAA8DAAC1))),
-        icon: const Icon(Icons.arrow_drop_down, color: sanareBlue),
-        isExpanded: true,
-        underline: const SizedBox(),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedGender,
+          hint: Text(
+            'Selecciona tu sexo',
+            style: TextStyle(color: sanareLightBlue.withOpacity(0.6), fontSize: 16),
+          ),
+          icon: const Icon(Icons.keyboard_arrow_down, color: sanareBlue),
+          isExpanded: true,
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedGender = newValue;
+            });
+          },
+          items: const [
+            DropdownMenuItem(value: 'M', child: Text('Masculino', style: TextStyle(color: sanareDarkText))),
+            DropdownMenuItem(value: 'F', child: Text('Femenino', style: TextStyle(color: sanareDarkText))),
+            DropdownMenuItem(value: 'O', child: Text('Otro', style: TextStyle(color: sanareDarkText))),
+          ],
+        ),
+      ),
+    );
+  }
 
-        onChanged: (String? newValue) {
-          setState(() {
-            _selectedGender = newValue;
-          });
-        },
+  Widget _buildRoleToggle() {
+    final isMedicoActive = _currentRole == UserRole.medico;
+    final isPacienteActive = _currentRole == UserRole.paciente;
 
-        items: const <DropdownMenuItem<String>>[
-          DropdownMenuItem<String>(
-            value: 'Masculino',
-            child: Text('Masculino', style: TextStyle(color: sanareDarkText)),
+    // Widget para un botón de rol (estilo más limpio y moderno)
+    Widget buildRoleButton(UserRole role, String label, bool isActive) {
+      return Expanded(
+        child: InkWell(
+          onTap: () => _setRole(role),
+          customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: isActive ? sanareBlue : Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: isActive ? sanareBlue : sanareLightBlue, width: 1.5),
+              boxShadow: isActive
+                  ? [
+                      BoxShadow(
+                        color: sanareBlue.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Center(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: isActive ? Colors.white : sanareBlue,
+                ),
+              ),
+            ),
           ),
-          DropdownMenuItem<String>(
-            value: 'Femenino',
-            child: Text('Femenino', style: TextStyle(color: sanareDarkText)),
-          ),
-          DropdownMenuItem<String>(
-            value: 'Otro',
-            child: Text('Otro', style: TextStyle(color: sanareDarkText)),
-          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildRoleButton(UserRole.paciente, 'Soy Paciente', isPacienteActive),
+          const SizedBox(width: 15),
+          buildRoleButton(UserRole.medico, 'Soy Médico', isMedicoActive),
         ],
       ),
     );
   }
 
-  // Widget de Formulario de Registro
   Widget _buildRegistrationForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _buildTextFieldLabel('Nombre de Usuario'),
-        _buildInputField(
-          hintText: 'Define tu nombre de usuario',
-          controller: _usernameController,
-        ),
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final isMedico = _currentRole == UserRole.medico;
 
-        _buildTextFieldLabel('Correo electrónico'),
-        _buildInputField(
-          hintText: 'ejemplo@correo.com',
-          keyboardType: TextInputType.emailAddress,
-          controller: _emailController,
-        ),
-
-        // Fila de Nombre y Apellido
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextFieldLabel('Nombre'),
-                  _buildInputField(hintText: '', controller: _firstNameController),
-                ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Sección de Credenciales
+          _buildTextFieldLabel('Nombre de Usuario *'),
+          _buildInputField(
+            hintText: 'Define tu nombre de usuario',
+            controller: _usernameController,
+            prefixIcon: Icons.person_outline,
+          ),
+          _buildTextFieldLabel('Correo electrónico *'),
+          _buildInputField(
+            hintText: 'ejemplo@correo.com',
+            keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
+            prefixIcon: Icons.email_outlined,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Correo obligatorio.';
+              if (!emailRegex.hasMatch(value)) return 'Formato de correo inválido.';
+              return null;
+            },
+          ),
+          // Nombres
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextFieldLabel('Nombre *'),
+                    _buildInputField(controller: _firstNameController, prefixIcon: Icons.badge_outlined),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextFieldLabel('Apellido'),
-                  _buildInputField(hintText: '', controller: _lastNameController),
-                ],
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextFieldLabel('Apellido *'),
+                    _buildInputField(controller: _lastNameController, prefixIcon: Icons.badge_outlined),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-
-        // Fila de Fecha de Nacimiento y Sexo
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextFieldLabel('Fecha de nacimiento'),
-                  _buildInputField(
-                    hintText: 'dd/mm/aaaa',
-                    keyboardType: TextInputType.datetime,
-                    controller: _dobController,
-                    readOnly: true,
-                    onTap: () => _selectDate(context),
-                  ),
-                ],
+            ],
+          ),
+          // Fecha de nacimiento y Sexo
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start, // Alineación para Dropdown
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextFieldLabel('Fecha de nacimiento *'),
+                    _buildInputField(
+                      hintText: 'dd/mm/aaaa',
+                      keyboardType: TextInputType.datetime,
+                      controller: _dobController,
+                      readOnly: true,
+                      onTap: () => _selectDate(context),
+                      prefixIcon: Icons.calendar_today,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Fecha obligatoria.';
+                        if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(value)) {
+                          return 'Formato DD/MM/AAAA.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextFieldLabel('Selecciona tu sexo'),
-                  _buildGenderDropdown(),
-                ],
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextFieldLabel('Sexo *'),
+                    _buildGenderDropdown(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-
-        _buildTextFieldLabel('Teléfono'),
-        _buildInputField(
-          hintText: 'Tu número de teléfono',
-          keyboardType: TextInputType.phone,
-          controller: _phoneController,
-        ),
-
-        _buildTextFieldLabel('Contraseña'),
-        _buildInputField(
-          hintText: 'Mínimo 6 caracteres',
-          isPassword: true,
-          controller: _passwordController,
-        ),
-
-        // Campos específicos de Médico
-        if (_currentRole == UserRole.medico)
-            _buildDoctorFields(),
-      ],
+            ],
+          ),
+          // Teléfono
+          _buildTextFieldLabel('Teléfono *'),
+          _buildInputField(
+            hintText: 'Tu número de teléfono',
+            keyboardType: TextInputType.phone,
+            controller: _phoneController,
+            prefixIcon: Icons.phone_outlined,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Teléfono obligatorio.';
+              if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                return 'Debe ser un número válido (10 dígitos).';
+              }
+              return null;
+            },
+          ),
+          // Contraseñas
+          _buildTextFieldLabel('Contraseña *'),
+          _buildInputField(
+            hintText: 'Mínimo 6 caracteres',
+            isPassword: true,
+            controller: _passwordController,
+            prefixIcon: Icons.lock_outline,
+            validator: (value) {
+              if (value == null || value.length < 6) return 'Mínimo 6 caracteres.';
+              return null;
+            },
+          ),
+          _buildTextFieldLabel('Confirmar Contraseña *'),
+          _buildInputField(
+            hintText: 'Repite tu contraseña',
+            isPassword: true,
+            controller: _confirmPasswordController,
+            prefixIcon: Icons.lock_reset_outlined,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Confirmación obligatoria.';
+              if (value != _passwordController.text) return 'Las contraseñas no coinciden.';
+              return null;
+            },
+          ),
+          // Campos de Médico
+          if (isMedico) _buildDoctorFields(),
+        ],
+      ),
     );
   }
 
-  // Widget de campos específicos para Médico
   Widget _buildDoctorFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTextFieldLabel('Cédula Profesional'),
+        _buildTextFieldLabel('Cédula Profesional *'),
         _buildInputField(
           hintText: 'Ej. 123456',
           keyboardType: TextInputType.number,
           controller: _licenseController,
+          prefixIcon: Icons.local_hospital_outlined,
+          validator: (value) {
+            if (_currentRole == UserRole.medico && (value == null || value.isEmpty)) {
+              return 'Cédula es obligatoria para médicos.';
+            }
+            return null;
+          },
         ),
-        _buildTextFieldLabel('Especialidad'),
+        _buildTextFieldLabel('Especialidad *'),
         _buildInputField(
           hintText: 'Ej. Cardiología',
           controller: _specialtyController,
+          prefixIcon: Icons.medical_services_outlined,
+          validator: (value) {
+            if (_currentRole == UserRole.medico && (value == null || value.isEmpty)) {
+              return 'Especialidad es obligatoria para médicos.';
+            }
+            return null;
+          },
         ),
       ],
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final isMedicoActive = _currentRole == UserRole.medico;
-    final isPacienteActive = _currentRole == UserRole.paciente;
-
-    final ButtonStyle medicoButtonStyle = OutlinedButton.styleFrom(
-      backgroundColor: isMedicoActive ? sanareBlue : Colors.transparent,
-      foregroundColor: isMedicoActive ? Colors.white : sanareLightBlue,
-      side: BorderSide(color: isMedicoActive ? sanareBlue : sanareLightBlue, width: 1.5),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      elevation: isMedicoActive ? 2 : 0,
-    );
-
-    final ButtonStyle pacienteButtonStyle = OutlinedButton.styleFrom(
-      backgroundColor: isPacienteActive ? sanareBlue : Colors.transparent,
-      foregroundColor: isPacienteActive ? Colors.white : sanareLightBlue,
-      side: BorderSide(color: isPacienteActive ? sanareBlue : sanareLightBlue, width: 1.5),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      elevation: isPacienteActive ? 2 : 0,
-    );
-
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: _buildTopLogo(),
-      ),
+      backgroundColor: sanareBlue, // 1. Fondo principal azul
+      appBar: null, // Eliminamos el AppBar
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(25.0),
+          // 2. Quitamos el padding global, se pondrá en el Container interior
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // Botones de alternancia Iniciar Sesión / Registrarse
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        // Navega a la pantalla de Login
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: sanareBlue,
-                        side: const BorderSide(color: sanareLightBlue),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 0,
-                      ),
-                      child: const Text('Iniciar Sesión', style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {}, // No hace nada, ya está seleccionado
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: sanareBlue,
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: sanareBlue),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 2,
-                      ),
-                      child: const Text('Registrarse', style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                ],
+            children: [
+              // --- Logo en el Fondo Azul ---
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 35.0),
+                child: Center(child: _buildTopLogo()), // Logo ahora blanco
               ),
-              const SizedBox(height: 20),
-
-              // Contenido de la vista de Registro
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 10),
-                  const Center(
-                    child: Text(
-                      'Crea una cuenta',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: sanareBlue,
+              // --- Contenedor Blanco Principal (la "tarjeta") ---
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30.0), // Bordes superiores redondeados
+                    topRight: Radius.circular(30.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 30.0), // Padding interior para el contenido
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // --- Título y Subtítulo ---
+                    const Center(
+                      child: Text(
+                        'Crea tu Cuenta Sanare',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: sanareDarkText,
+                            height: 1.2),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  ),
-                  const Divider(color: sanareLightBlue, height: 40, thickness: 1),
+                    const SizedBox(height: 5),
+                    Center(
+                      child: Text(
+                        'Completa los campos para unirte a la plataforma.',
+                        style: TextStyle(fontSize: 16, color: sanareDarkText.withOpacity(0.7)),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 25),
 
-                  // Selector de Rol (Soy paciente - Soy médico)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // --- Tabs de Navegación (Login/Register) ---
+                    Row(
                       children: [
-                        OutlinedButton(
-                          onPressed: () => _setRole(UserRole.paciente),
-                          style: pacienteButtonStyle,
-                          child: const Text('Soy paciente', style: TextStyle(fontSize: 14)),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                              );
+                            },
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: sanareLightBlue, // Cambiado para ser más discreto
+                              side: const BorderSide(color: sanareLightBlue),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              elevation: 0,
+                            ),
+                            child: const Text('Iniciar Sesión', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                          ),
                         ),
-                        OutlinedButton(
-                          onPressed: () => _setRole(UserRole.medico),
-                          style: medicoButtonStyle,
-                          child: const Text('Soy médico', style: TextStyle(fontSize: 14)),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {}, // Se mantiene vacío para indicar la pestaña activa
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: sanareBlue,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              elevation: 4,
+                            ),
+                            child: const Text('Registrarse', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                    // Eliminamos el Divider y lo reemplazamos por espacio
+                    const SizedBox(height: 25),
 
-                  // FORMULARIO ÚNICO
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (Widget child, Animation<double> animation) {
-                      return SizeTransition(
-                        sizeFactor: animation,
-                        child: FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: KeyedSubtree(
-                      key: ValueKey<UserRole>(_currentRole),
-                      child: _buildRegistrationForm(),
+                    // --- Selector de Rol ---
+                    _buildRoleToggle(),
+
+                    // --- Formulario de Registro ---
+                    _buildRegistrationForm(),
+
+                    // --- Botón de Registro Principal ---
+                    const SizedBox(height: 40),
+                    Center(
+                      child: _isLoading
+                          ? const CircularProgressIndicator(color: sanareBlue)
+                          : ElevatedButton(
+                              onPressed: _handleRegister,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 55), // Usar todo el ancho disponible
+                                backgroundColor: sanareBlue,
+                                foregroundColor: Colors.white,
+                                elevation: 8, // Mayor sombra para efecto CTA
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Esquinas más redondas
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              child: const Text('Siguiente'),
+                            ),
                     ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  // Botón Siguiente
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _handleRegister,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(180, 50),
-                        backgroundColor: sanareBlue,
-                        foregroundColor: Colors.white,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text('Siguiente', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                ],
+                    const SizedBox(height: 30), // Espacio al final
+                  ],
+                ),
               ),
             ],
           ),
